@@ -36,7 +36,7 @@ Create a `.env` file in root:
 ```
  - VITE_REACT_APP_BACKEND_BASEURL=http://localhost:5000
 
-- Make sure to replace the values with real credentials.
+- Make sure to replace the value with real credentials.
 
 ### 4. Start development server
 ```bash
