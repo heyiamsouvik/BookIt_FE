@@ -53,3 +53,9 @@ http://localhost:5173/
 ```bash
 https://bookit-fe.onrender.com/
 ```
+
+## BACKEND LINK:
+- Uploaded at GitHub
+```bash
+https://github.com/heyiamsouvik/BookIt_BE.git
+```
