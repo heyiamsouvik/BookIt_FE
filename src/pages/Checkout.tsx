@@ -49,10 +49,18 @@ const Checkout = () => {
         setDiscount(res.data.discount);
         toast.success(`Promo applied! You saved ₹${res.data.discount}`);
       }
-    } catch (/** @type {any} */ err) {
-      toast.error(err.response?.data?.message || "Invalid Promo Code");
-      setDiscount(0);
-    }
+    
+    } catch (err) {
+  const error = err as { response?: { data?: { message?: string } } };
+
+  const message =
+    error?.response?.data?.message ||
+    (err instanceof Error ? err.message : "Invalid Promo Code");
+
+  toast.error(message);
+  setDiscount(0);
+}
+
   };
 
   const handleBooking = async () => {
@@ -73,19 +81,17 @@ const Checkout = () => {
     };
 
     try {
-      // Create booking
       const res = await axios.post(
         `${import.meta.env.VITE_REACT_APP_BACKEND_BASEURL}/booking`,
         payload,
         { withCredentials: true }
       );
-      console.log("here1");
+
       if (res.data.success) {
         const refId = res.data.refId;
 
         toast.success("Booking created. Redirecting to payment...");
 
-        // Simulated payment success
         const confirmPayload = {
           refId,
           paymentId: "dummyPayment123",
@@ -101,10 +107,16 @@ const Checkout = () => {
           navigate(`/confirmation?ref=${refId}`);
         }
       }
-    } catch (/** @type {any} */ err) {
-      console.error(err);
-      toast.error(err.response?.data?.message || "Server error");
-    }
+    } catch (err) {
+  const error = err as { response?: { data?: { message?: string } } };
+
+  const message =
+    error?.response?.data?.message ||
+    (err instanceof Error ? err.message : "Server error");
+
+  console.error(err);
+  toast.error(message);
+}
   };
 
   return (
@@ -120,7 +132,6 @@ const Checkout = () => {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Left Form */}
           <div className="md:col-span-2 bg-white rounded-lg p-6 shadow">
             <div className="mb-3">
               <label className="block mb-1 text-sm font-medium">
@@ -160,7 +171,6 @@ const Checkout = () => {
             </div>
           </div>
 
-          {/* Right Summary */}
           <div className="bg-white p-6 shadow rounded-lg text-sm">
             <div className="mb-2 flex justify-between">
               <span>Experience</span>
