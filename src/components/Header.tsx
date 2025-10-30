@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import logo from "../assets/logo.png";
@@ -11,6 +11,11 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("userLoggedIn"));
+  }, []);
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
@@ -28,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         { withCredentials: true }
       );
       localStorage.removeItem("userLoggedIn");
+      setIsLoggedIn(false);
       toast.success("Logged out");
       navigate("/login");
     } catch {
@@ -64,14 +70,21 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           Search
         </button>
 
-        <button
-          onClick={logout}
-          className="flex items-center gap-3 border px-5 py-2 rounded-md font-medium bg-yellow-400 hover:scale-105 transition"
-        >
-          logout
-        </button>
-
-
+        {isLoggedIn ? (
+          <button
+            onClick={logout}
+            className="flex items-center gap-3 border px-5 py-2 rounded-md font-medium bg-yellow-400 hover:scale-105 transition"
+          >
+            Logout
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="flex items-center gap-3 border px-5 py-2 rounded-md font-medium bg-gray-200 hover:bg-gray-300 transition"
+          >
+            Login
+          </button>
+        )}
       </div>
     </header>
   );
