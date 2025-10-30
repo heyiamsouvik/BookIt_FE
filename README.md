@@ -48,3 +48,8 @@ npm run dev
 http://localhost:5173/
 ```
 
+## LIVE LINK:
+- Deployed at render
+```bash
+https://bookit-fe.onrender.com/
+```
